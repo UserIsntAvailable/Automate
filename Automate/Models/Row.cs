@@ -11,10 +11,13 @@ namespace Automate.Models {
     /// </summary>
     public class Row : IEquatable<Row>, IEnumerable<Pixel> {
 
+        #region Private Fields
+
         /// <summary>
         /// The pixels that define this row
         /// </summary>
-        private readonly Pixel[] pixels;
+        private readonly Pixel[] _pixels;
+        #endregion
 
         #region Constructor
 
@@ -23,7 +26,7 @@ namespace Automate.Models {
         /// </summary>
         public Row(Pixel[] pixels) {
 
-            this.pixels = pixels;
+            this._pixels = pixels;
         }
         #endregion
 
@@ -40,7 +43,7 @@ namespace Automate.Models {
 
             if (this.Length != other.Length) return false;
 
-            if (!this.pixels.SequenceEqual(other.pixels)) return false;
+            if (!this._pixels.SequenceEqual(other._pixels)) return false;
 
             return true;
         }
@@ -53,7 +56,7 @@ namespace Automate.Models {
         /// <returns>A boolean</returns>
         public bool Equals(Row other, int tolerance) {
 
-            foreach (var (thisPixel, otherPixel) in this.pixels.Zip(other.pixels)) {
+            foreach (var (thisPixel, otherPixel) in this._pixels.Zip(other._pixels)) {
 
                 if (EuclideanColorDistanceMetric(thisPixel.Color, otherPixel.Color) > tolerance) {
 
@@ -73,7 +76,7 @@ namespace Automate.Models {
         /// <returns><see cref="Enumerable"/></returns>
         public IEnumerator<Pixel> GetEnumerator() {
 
-            foreach (var pixel in pixels) {
+            foreach (var pixel in _pixels) {
 
                 yield return pixel;
             }
@@ -88,15 +91,15 @@ namespace Automate.Models {
         #region Index Implementation
 
         /// <summary>
-        /// Gets or sets a value on <see cref="pixels"/> prop
+        /// Gets or sets a value on <see cref="_pixels"/> prop
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
         public Pixel this[int index] {
 
-            get { return pixels[index]; }
+            get { return _pixels[index]; }
 
-            set { pixels[index] = value; }
+            set { _pixels[index] = value; }
         }
         #endregion
 
@@ -106,7 +109,7 @@ namespace Automate.Models {
 
             var slice = new Pixel[length];
 
-            Array.Copy(pixels, start, slice, 0, length);
+            Array.Copy(_pixels, start, slice, 0, length);
 
             return new Row(slice);
         }
@@ -118,7 +121,7 @@ namespace Automate.Models {
         /// <summary>
         /// The width of this row
         /// </summary>
-        public int Length => pixels.Length;
+        public int Length => _pixels.Length;
         #endregion
 
         #region Override Methods
@@ -130,7 +133,7 @@ namespace Automate.Models {
             return Equals((Row)obj);
         }
 
-        public override int GetHashCode() => pixels.GetHashCode();
+        public override int GetHashCode() => _pixels.GetHashCode();
         #endregion
 
         #region Private Helper Methods
