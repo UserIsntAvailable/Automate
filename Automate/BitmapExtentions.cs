@@ -1,16 +1,16 @@
-﻿using Automate.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Linq;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
+using Automate.Models;
+using System.Collections.ObjectModel;
 
 namespace Automate {
 
     /// <summary>
     /// A class for <see cref="Bitmap"/> image processing extentions
     /// </summary>
-    public static class BitmapRecognition {
+    public static class BitmapExtentions {
 
         #region Public Methods
 
@@ -19,7 +19,7 @@ namespace Automate {
         /// </summary>
         /// <param name="bmp">Your bitmap object</param>
         /// <returns>An array of <see cref="Row"/>/returns>
-        public static unsafe Row[] ToRowArray(this Bitmap bmp) {
+        public static unsafe ReadOnlyCollection<Row> ToRowArray(this Bitmap bmp) {
 
             // Returned
             Row[] rows = new Row[bmp.Height];
@@ -56,7 +56,7 @@ namespace Automate {
             // The system memory will dispose the bitmap if is not used anymore 
             bmp.UnlockBits(bmpData);
 
-            return rows;
+            return Array.AsReadOnly(rows);
         }
 
         /// <summary>
@@ -109,14 +109,14 @@ namespace Automate {
         public static bool TryMatchBitmaps(this Bitmap thisBitmap, Bitmap template, int tolerance, out Pixel p) {
 
             // Maybe I need to resize the bitmaps for fast search
-            Row[] thisRowArray = thisBitmap.ToRowArray();
-            Row[] templateRowArray = template.ToRowArray();
+            ReadOnlyCollection<Row> thisRowArray = thisBitmap.ToRowArray();
+            ReadOnlyCollection<Row> templateRowArray = template.ToRowArray();
 
-            int templateHeigth = templateRowArray.Length;
+            int templateHeigth = templateRowArray.Count;
             int templateWidth = templateRowArray[0].Length;
 
             // For loop each row on thisRowArray
-            for (int y1 = 0; y1 < thisRowArray.Length - templateHeigth; y1++) {
+            for (int y1 = 0; y1 < thisRowArray.Count - templateHeigth; y1++) {
 
                 // For loop each pixel on each row inside thisRowArray
                 for (int x1 = 0; x1 < thisRowArray[y1].Length - templateWidth; x1++) {
