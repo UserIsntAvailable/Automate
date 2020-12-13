@@ -1,2 +1,2 @@
 # Automate
-A tool for automate process on windows working with image processing
+A tool for automate processes on windows working with image processing
