@@ -81,7 +81,7 @@ namespace Automate {
         /// <param name="other">Your comparison</param>
         /// <param name="tolerence">The tolerance percentage ( check README.md for more information )</param>
         /// <returns>A boolean</returns>
-        public static bool EqualTo(this Bitmap thisBitmap, Bitmap other, int tolerence) {
+        public static bool EqualTo(this Bitmap thisBitmap, Bitmap other, decimal tolerence) {
 
             throw new NotImplementedException("I will do it later :sure:");
         }

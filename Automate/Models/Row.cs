@@ -38,31 +38,11 @@ namespace Automate.Models {
         /// Check if the two rows are exactly the same
         /// </summary>
         /// <param name="other">Your comparison object</param>
-        /// <returns>A boolean</returns>
         public bool Equals(Row other) {
 
             if (this.Length != other.Length) return false;
 
             if (!this._pixels.SequenceEqual(other._pixels)) return false;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Chech if the two rows are only equals by colors presents on the same order skipping pixels position
-        /// </summary>
-        /// <param name="other">Your comparison object</param>
-        /// <param name="tolerance">The tolerance percentage ( check README.md for more information )</param>
-        /// <returns>A boolean</returns>
-        public bool Equals(Row other, int tolerance) {
-
-            foreach (var (thisPixel, otherPixel) in this._pixels.Zip(other._pixels)) {
-
-                if (EuclideanColorDistanceMetric(thisPixel.Color, otherPixel.Color) > tolerance) {
-
-                    return false;
-                }
-            }
 
             return true;
         }
@@ -124,6 +104,26 @@ namespace Automate.Models {
         public int Length => _pixels.Length;
         #endregion
 
+        #region Public Methods
+
+        /// <summary>
+        /// Chech if the two rows are only equals by colors presents on the same order skipping pixels position
+        /// </summary>
+        /// <param name="other">Your comparison object</param>
+        /// <param name="tolerance">The tolerance ( check README.md for more information )</param>
+        public bool Equals(Row other, decimal tolerance) {
+
+            foreach (var (thisPixel, otherPixel) in this._pixels.Zip(other._pixels)) {
+
+                if (EuclideanColorDistanceMetric(thisPixel.Color, otherPixel.Color) > tolerance) {
+
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         #region Override Methods
 
         public override bool Equals(object obj) {
@@ -135,14 +135,15 @@ namespace Automate.Models {
 
         public override int GetHashCode() => _pixels.GetHashCode();
         #endregion
+        #endregion
 
-        #region Private Helper Methods
+        #region Private Methods
 
         /// <summary>
         /// Gets the distance between two colors
         /// </summary>
         /// <returns></returns>
-        private static double EuclideanColorDistanceMetric(Color c1, Color c2) {
+        private static decimal EuclideanColorDistanceMetric(Color c1, Color c2) {
 
             // color distance
             var distanceSquared =
@@ -151,7 +152,7 @@ namespace Automate.Models {
                 + (c1.B - c2.B) * (c1.B - c2.B);
 
             // 195075 = (255 * 255) + (255 * 255) + (255 + 255)
-            return distanceSquared / 195075d;
+            return (decimal)(distanceSquared / 195075d);
         }
         #endregion
     }
