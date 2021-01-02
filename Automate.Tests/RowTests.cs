@@ -20,7 +20,7 @@ namespace Automate.Tests {
         }
 
         [Fact]
-        public void Equals_With_Tolerance_Should_Be_True() {
+        public void Equals_By_Colors_Should_Be_True() {
 
             const int rowLength = 10;
 
@@ -30,7 +30,7 @@ namespace Automate.Tests {
             // #7FFFD4
             var aquamarineRow = new Row(PixelsFactory(rowLength, Color.Aquamarine));
 
-            Assert.True(aquaRow.Equals(aquamarineRow, 0.1m));
+            Assert.True(aquaRow.EqualsByColors(aquamarineRow, 0.1m));
         }
 
         [Fact]

@@ -42,9 +42,7 @@ namespace Automate.Models {
 
             if (this.Length != other.Length) return false;
 
-            if (!this._pixels.SequenceEqual(other._pixels)) return false;
-
-            return true;
+            return _pixels.SequenceEqual(other._pixels);
         }
         #endregion
 
@@ -71,10 +69,8 @@ namespace Automate.Models {
         #region Index Implementation
 
         /// <summary>
-        /// Gets or sets a value on <see cref="_pixels"/> prop
+        /// Gets or sets a <see cref="Pixel"/> on this <see cref="Row"/>
         /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
         public Pixel this[int index] {
 
             get { return _pixels[index]; }
@@ -99,7 +95,7 @@ namespace Automate.Models {
         #region Public Properties
 
         /// <summary>
-        /// The width of this row
+        /// The width of this <see cref="Row"/>
         /// </summary>
         public int Length => _pixels.Length;
         #endregion
@@ -107,18 +103,15 @@ namespace Automate.Models {
         #region Public Methods
 
         /// <summary>
-        /// Chech if the two rows are only equals by colors presents on the same order skipping pixels position
+        /// Chech if the two rows are only equals by having colors on the same order ignoring pixels position
         /// </summary>
         /// <param name="other">Your comparison object</param>
         /// <param name="tolerance">The tolerance ( check README.md for more information )</param>
-        public bool Equals(Row other, decimal tolerance) {
+        public bool EqualsByColors(Row other, decimal tolerance) {
 
             foreach (var (thisPixel, otherPixel) in this._pixels.Zip(other._pixels)) {
 
-                if (EuclideanColorDistanceMetric(thisPixel.Color, otherPixel.Color) > tolerance) {
-
-                    return false;
-                }
+                if (EuclideanColorDistanceMetric(thisPixel.Color, otherPixel.Color) > tolerance) return false;
             }
 
             return true;
@@ -142,7 +135,6 @@ namespace Automate.Models {
         /// <summary>
         /// Gets the distance between two colors
         /// </summary>
-        /// <returns></returns>
         private static decimal EuclideanColorDistanceMetric(Color c1, Color c2) {
 
             // color distance
