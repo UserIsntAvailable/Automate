@@ -24,9 +24,9 @@ namespace Automate.Models {
         /// <summary>
         /// Default constructor
         /// </summary>
-        public Row(Pixel[] pixels) {
+        public Row(IEnumerable<Pixel> pixels) {
 
-            this._pixels = pixels;
+            this._pixels = pixels.ToArray();
         }
         #endregion
 
