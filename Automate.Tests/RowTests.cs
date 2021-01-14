@@ -6,12 +6,10 @@ using Automate.Models;
 namespace Automate.Tests {
     public class RowTests {
 
-        #region Tests
-
         [Fact]
         public void Equals_Should_Be_True() {
 
-            var randomPixels = PixelsFactory(10, Color.Empty);
+            var randomPixels = Factory.Pixels(10, Color.Empty);
 
             var row1 = new Row(randomPixels);
             var row2 = new Row(randomPixels);
@@ -25,10 +23,10 @@ namespace Automate.Tests {
             const int rowLength = 10;
 
             // #00FFFF
-            var aquaRow = new Row(PixelsFactory(rowLength, Color.Aqua));
+            var aquaRow = new Row(Factory.Pixels(rowLength, Color.Aqua));
 
             // #7FFFD4
-            var aquamarineRow = new Row(PixelsFactory(rowLength, Color.Aquamarine));
+            var aquamarineRow = new Row(Factory.Pixels(rowLength, Color.Aquamarine));
 
             Assert.True(aquaRow.EqualsByColors(aquamarineRow, 0.1m));
         }
@@ -36,8 +34,8 @@ namespace Automate.Tests {
         [Fact]
         public void Range_Implementation_Should_Work() {
 
-            var randomPixels = PixelsFactory(5, Color.Red)
-                .Concat(PixelsFactory(5, Color.Blue))
+            var randomPixels = Factory.Pixels(5, Color.Red)
+                .Concat(Factory.Pixels(5, Color.Blue))
                 .ToArray();
 
             var row = new Row(randomPixels);
@@ -47,17 +45,5 @@ namespace Automate.Tests {
 
             Assert.Equal(rowSlice, randomPixelsSlice);
         }
-        #endregion
-
-        #region Private Methods
-
-        private static Pixel[] PixelsFactory(int length, Color color) {
-
-            return Enumerable
-                .Range(0, length)
-                .Select(i => new Pixel((i, 0), color))
-                .ToArray();
-        }
-        #endregion
     }
 }
